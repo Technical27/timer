@@ -1,25 +1,26 @@
 let time = moment();
-let startTime, remindTime, endTime;
+let startTime, remindTime, endTime
+let rtimeLeft = 0;
 let timeLeft = 90 * 60;
 let stopped = true;
+let reminderActive = false;
 const sound = new Audio('alarm.mp3');
 
 const updateTime = () => {
   time = moment();
   $('#ctime').html(time.format('h:mm:ss'));
   if (stopped) return;
-  const diff = endTime.diff(time, 'seconds')
-  if (diff < 1) {
+  if (endTime.diff(time, 'seconds') < 1) {
     stopped = true;
     return sound.play();
   }
-  $('#time').html(diff);
+  $('#time').html(endTime.diff(time, 'minutes'));
   if (remindTime) {
-    const rdiff = remindTime.diff(time, 'seconds');
-    if (rdiff < 1) {
+    if (remindTime.diff(time, 'seconds') < 1 && reminderActive) {
       startTime = moment();
       remindTime = undefined;
-      sound.play();
+      reminderActive = false;
+      return sound.play();
     }
     $('#rtime').html(remindTime.diff(time, 'minutes'));
   }
@@ -34,16 +35,19 @@ $(document).ready(() => {
     if (stopped) {
       $('#start').html('start');
       timeLeft = endTime.diff(time, 'seconds');
+      if (reminderActive) rtimeLeft = remindTime.diff(time, 'seconds');
     }
     else {
       $('#start').html('stop');
       time = moment();
       endTime = time.clone().add(timeLeft, 'seconds');
+      if (reminderActive && rtimeLeft) remindTime = time.clone().add(rtimeLeft, 'seconds');
     }
   });
-  $('#rconfirm').click(() => {
+  $('#rconfirm').click(() => { 
     const rvalue = parseInt($('#rvalue').val());
     if (isNaN(rvalue)) return;
     remindTime = startTime.clone().add(rvalue, 'minutes');
+    reminderActive = true;
   });
 });
