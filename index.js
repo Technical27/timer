@@ -14,11 +14,13 @@ const formatTime = time => {
 
 const updateTime = () => {
   currentTime = moment();
+  if (sound.ended) $('#sstop').hide();
   $('#ctime').html(currentTime.format('h:mm:ss'));
   if (stopped) return;
   $('#time').html(formatTime(endTime.diff(currentTime)));
   if (endTime.diff(currentTime, 'seconds') < 1) {
     stopped = true;
+    $('#sstop').show();
     return sound.play();
   }
   if (remindTime) {
@@ -27,7 +29,8 @@ const updateTime = () => {
       startTime = moment();
       remindTime = undefined;
       reminderActive = false;
-      return sound.play();
+      $('#sstop').show();
+      return sound.play(); 
     } 
   }
 };
@@ -58,6 +61,7 @@ $(document).ready(() => {
   });
   $('#sstop').click(() => {
     sound.pause();
+    $('#sstop').hide();
     sound.currentTime = 0;
   });
 });
