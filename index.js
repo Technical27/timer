@@ -1,28 +1,34 @@
-let time = moment();
+let currentTime = moment();
 let startTime, remindTime, endTime
 let rtimeLeft = 0;
-let timeLeft = 90 * 60;
+let timeLeft = 60 * 90;
 let stopped = true;
 let reminderActive = false;
 const sound = new Audio('alarm.mp3');
 
+const formatTime = time => {
+  const t = moment.duration(time);
+  if (t.asSeconds() < 60) return `${Math.floor(t.asSeconds())} seconds`;
+  return `${Math.round(t.asMinutes())} minutes`;
+}
+
 const updateTime = () => {
-  time = moment();
-  $('#ctime').html(time.format('h:mm:ss'));
+  currentTime = moment();
+  $('#ctime').html(currentTime.format('h:mm:ss'));
   if (stopped) return;
-  if (endTime.diff(time, 'seconds') < 1) {
+  $('#time').html(formatTime(endTime.diff(currentTime)));
+  if (endTime.diff(currentTime, 'seconds') < 1) {
     stopped = true;
     return sound.play();
   }
-  $('#time').html(endTime.diff(time, 'minutes'));
   if (remindTime) {
-    if (remindTime.diff(time, 'seconds') < 1 && reminderActive) {
+    $('#rtime').html(formatTime(remindTime.diff(currentTime)));
+    if (remindTime.diff(currentTime, 'seconds') < 1 && reminderActive) {
       startTime = moment();
       remindTime = undefined;
       reminderActive = false;
       return sound.play();
-    }
-    $('#rtime').html(remindTime.diff(time, 'minutes'));
+    } 
   }
 };
 
@@ -34,14 +40,14 @@ $(document).ready(() => {
     stopped = !stopped;
     if (stopped) {
       $('#start').html('start');
-      timeLeft = endTime.diff(time, 'seconds');
-      if (reminderActive) rtimeLeft = remindTime.diff(time, 'seconds');
+      timeLeft = endTime.diff(currentTime, 'seconds');
+      if (reminderActive) rtimeLeft = remindTime.diff(currentTime, 'seconds');
     }
     else {
       $('#start').html('stop');
-      time = moment();
-      endTime = time.clone().add(timeLeft, 'seconds');
-      if (reminderActive && rtimeLeft) remindTime = time.clone().add(rtimeLeft, 'seconds');
+      currentTime = moment();
+      endTime = currentTime.clone().add(timeLeft, 'seconds');
+      if (reminderActive && rtimeLeft) remindTime = currentTime.clone().add(rtimeLeft, 'seconds');
     }
   });
   $('#rconfirm').click(() => { 
@@ -49,5 +55,9 @@ $(document).ready(() => {
     if (isNaN(rvalue)) return;
     remindTime = startTime.clone().add(rvalue, 'minutes');
     reminderActive = true;
+  });
+  $('#sstop').click(() => {
+    sound.pause();
+    sound.currentTime = 0;
   });
 });
