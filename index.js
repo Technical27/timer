@@ -6,7 +6,7 @@ const sound = new Audio('alarm.mp3');
 
 const updateTime = () => {
   time = moment();
-  $('#ctime').html(time.format('h:m:s'));
+  $('#ctime').html(time.format('h:mm:ss'));
   if (stopped) return;
   const diff = endTime.diff(time, 'seconds')
   if (diff < 1) {
