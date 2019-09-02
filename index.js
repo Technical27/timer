@@ -26,7 +26,6 @@ const updateTime = () => {
   if (remindTime) {
     $('#rtime').html(formatTime(remindTime.diff(currentTime)));
     if (remindTime.diff(currentTime, 'seconds') < 1 && reminderActive) {
-      startTime = moment();
       remindTime = undefined;
       reminderActive = false;
       $('#sstop').show();
@@ -36,7 +35,6 @@ const updateTime = () => {
 };
 
 $(document).ready(() => {
-  startTime = moment();
   updateTime();
   setInterval(updateTime, 1000);
   $('#start').click(() => {
@@ -53,11 +51,14 @@ $(document).ready(() => {
       if (reminderActive && rtimeLeft) remindTime = currentTime.clone().add(rtimeLeft, 'seconds');
     }
   });
-  $('#rconfirm').click(() => { 
+  $('#rconfirm').click(() => {
     const rvalue = parseInt($('#rvalue').val());
     if (isNaN(rvalue)) return;
+    if (!reminderActive) {
+      startTime = moment();
+      reminderActive = true;
+    }
     remindTime = startTime.clone().add(rvalue, 'minutes');
-    reminderActive = true;
   });
   $('#sstop').click(() => {
     sound.pause();

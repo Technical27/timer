@@ -2,15 +2,27 @@
 <html>
   <head>
     <title>timer</title>
+    <link href='index.css' rel='stylesheet' type='text/css'>
   </head>
   <body>
-    <h1>Time left: <span id="time">0</span></h1>
-    <h2>Current Time: <span id="ctime"></span></h2>
-    <h2>Next Reminder In: <span id="rtime">0</span></h2>
-    <button id="start">start</button>
-    <input type="text" id="rvalue">
-    <button id="rconfirm">set next reminder</button>
-    <button id="sstop" style="display: none;">stop alarm</button>
+    <div class="flex column">
+      <h1>Time left: <span id="time">0</span></h1>
+      <h2>Current Time: <span id="ctime"></span></h2>
+      <div id="rbox" class="flex column">
+        <h2>Next Reminder In: <span id="rtime">0</span></h2>
+        <div class="flex column">
+          <h3>Set Reminder Time:</h3>
+          <div class="flex row">
+            <input type="text" id="rvalue">
+            <button id="rconfirm">confirm</button>
+          </div>
+        </div>
+      </div>
+      <div class="flex column">
+        <button id="start">start</button>
+        <button id="sstop" style="display: none;">stop alarm</button>
+      </div>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="index.js"></script>

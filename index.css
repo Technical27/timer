@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: 'Source Code Pro', monospace, sans-serif;
+}
+
+html {
+  background: linear-gradient(-45deg, rgba(147,147,147,1) 0%, rgba(255,255,255,1) 100%);
+  height: 100%;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  align-content: center;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.row {
+  flex-direction: row;
+}
+
+h1 {
+  margin: 4rem;
+}
+
+#rvalue {
+  margin: 0.3rem;
+  height: 1rem;
+  border: 0.2rem dashed grey;
+}
+
+#rvalue:focus {
+  border: 0.2rem dashed black;
+}
+
+#rconfirm {
+  height: 1.2rem;
+}
+
+#rbox {
+  margin: 1.2rem;
+}
+
+button {
+  padding: 0.2rem;
+}
+
+#start {
+  font-size: 3rem;
+}
+#sstop {
+  font-size: 3rem;
+}
